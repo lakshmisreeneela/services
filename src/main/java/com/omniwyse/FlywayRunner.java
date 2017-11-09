@@ -24,7 +24,7 @@ public class FlywayRunner {
         this.jdbcUrl = "jdbc:mysql://" + db.host() + ":" + db.port() + "/%s?createDatabaseIfNotExist=true";
         this.user = db.user();
         this.password = db.password();
-       // migrate();
+       migrate();
     }
 
     public void migrate() {

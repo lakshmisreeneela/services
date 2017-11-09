@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omniwyse.models.UserCredentials;
 import com.omniwyse.services.LoginService;
 import com.omniwyse.utils.LoginResponse;
+import com.omniwyse.utils.RegistrationDTO;
+import com.omniwyse.utils.Response;
 
 
 
@@ -20,27 +22,34 @@ public class LoginController {
 	@Autowired
 	private LoginService service;
 
-    @Autowired
-    private LoginResponse response;
-    
-    
-    @RequestMapping(value = "/userlogin", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> userLogin(@RequestBody UserCredentials UserCredentials) {
-        LoginResponse user = service.getUser(UserCredentials);
-      return new ResponseEntity<LoginResponse>(user, HttpStatus.OK);
-	}
-//     
-//    @RequestMapping(value="/registration", method = RequestMethod.POST)
-//    public ResponseEntity<Response> registration(@RequestBody RegistrationDTO registrationDTO)
-//    {
-//    	Address address=new Address();
-//    	address.setCity(registrationDTO.getCity());
-//    	
-//    	
-//    	
-//    	
-//    	UserCredentials userCredentials = new UserCredentials(); 
-//    	userCredentials.set
-//    }
+//    @Autowired
+//    private LoginResponse response;
 //    
+    
+	@SuppressWarnings("null")
+	@RequestMapping(value = "/userlogin", method = RequestMethod.POST)
+	public ResponseEntity<LoginResponse> userLogin(@RequestBody UserCredentials UserCredentials) {
+		LoginResponse response = service.getUser(UserCredentials);
+		if (response != null && response.getUserId() != null) {
+			response.setStatus(200);
+			response.setDescription("login success");
+			return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
+		} else if (response != null) {
+			response.setStatus(400);
+			response.setDescription("invalid username or password");
+			return new ResponseEntity<LoginResponse>(response, HttpStatus.BAD_REQUEST);
+		} else {
+			response.setStatus(400);
+			response.setDescription("database doesn't exist");
+			return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
+		}
+	}
+   
+    
+    @RequestMapping(value="/registration", method = RequestMethod.POST)
+    public ResponseEntity<Response> registration(@RequestBody RegistrationDTO registrationDTO)
+    {
+    	service.registration(registrationDTO);
+    }
+    
 }

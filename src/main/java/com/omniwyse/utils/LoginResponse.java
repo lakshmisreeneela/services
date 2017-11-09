@@ -1,21 +1,18 @@
 package com.omniwyse.utils;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class LoginResponse {
 
-    private long userId;
+    private Long userId;
     private String username;
     private String userrole;
-    private long status;
+    private Long status;
     private String description;
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

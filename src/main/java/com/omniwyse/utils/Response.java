@@ -1,5 +1,8 @@
 package com.omniwyse.utils;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class Response {
 private String message;
 private String description;

@@ -22,9 +22,9 @@ public class LoginController {
 	@Autowired
 	private LoginService service;
 
-//    @Autowired
-//    private LoginResponse response;
-//    
+	@Autowired
+	private Response response;
+   
     
 	@SuppressWarnings("null")
 	@RequestMapping(value = "/userlogin", method = RequestMethod.POST)
@@ -46,10 +46,31 @@ public class LoginController {
 	}
    
     
-    @RequestMapping(value="/registration", method = RequestMethod.POST)
-    public ResponseEntity<Response> registration(@RequestBody RegistrationDTO registrationDTO)
-    {
-    	service.registration(registrationDTO);
-    }
-    
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public ResponseEntity<Response> registration(@RequestBody RegistrationDTO registrationDTO) {
+		int rowEffected = service.registration(registrationDTO);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("Registration successfull");
+			response.setDescription("Registration successfull");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else if (rowEffected == -1) {
+			response.setStatus(400);
+			response.setMessage("mailid already in use");
+			response.setDescription("mailid already in use");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		} else if (rowEffected == -5) {
+			response.setStatus(400);
+			response.setMessage("contactnumber in use");
+			response.setDescription("contactnumber in use");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		response.setStatus(200);
+		response.setMessage("Registration successfull");
+		response.setDescription("Registration successfull");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}
+
 }

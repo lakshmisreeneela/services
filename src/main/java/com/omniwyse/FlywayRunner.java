@@ -14,35 +14,31 @@ import com.omniwyse.db.DBFactory;
 @Service
 public class FlywayRunner {
 
+	private final String jdbcUrl, user, password;
 
-    private final String jdbcUrl, user, password;
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlywayRunner.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FlywayRunner.class);
+	@Autowired
+	public FlywayRunner(DBConnectionProperties db, DBFactory dbFactory) {
+		this.jdbcUrl = "jdbc:mysql://" + db.host() + ":" + db.port() + "/%s?createDatabaseIfNotExist=true";
+		this.user = db.user();
+		this.password = db.password();
+		migrate();
+	}
 
-    @Autowired
-    public FlywayRunner(DBConnectionProperties db, DBFactory dbFactory) {
-        this.jdbcUrl = "jdbc:mysql://" + db.host() + ":" + db.port() + "/%s?createDatabaseIfNotExist=true";
-        this.user = db.user();
-        this.password = db.password();
-       migrate();
-    }
-
-    public void migrate() {
-        migrate("service");
-    }
-
-  
-
-    private void migrate(String schema) {
-        LOGGER.info("Migrating schema {}", schema);
-        Flyway flyway = new Flyway();
-        flyway.setLocations("db/migration/" + schema);
-        flyway.setDataSource(String.format(jdbcUrl, schema), user, password, "USE " + schema);
-        flyway.migrate();
-        try {
-            flyway.getDataSource().getConnection().close();
-        } catch (SQLException e) {
-            LOGGER.warn("Failed to close flyway datasource connection", e);
-        }
-    }
+	public void migrate() {
+		migrate("service");
+	}
+	private void migrate(String schema) {
+		LOGGER.info("Migrating schema {}", schema);
+		Flyway flyway = new Flyway();
+		flyway.setLocations("db/migration/" + schema);
+		flyway.setDataSource(String.format(jdbcUrl, schema), user, password, "USE " + schema);
+		flyway.migrate();
+		try {
+			flyway.getDataSource().getConnection().close();
+		} catch (SQLException e) {
+			LOGGER.warn("Failed to close flyway datasource connection", e);
+		}
+	}
 }

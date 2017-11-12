@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Table(name = "usersdetails")
 public class UserCredentials {
-	private Long id;
+	private Long userid;
 	private String fname;
 	private String lname;
 	private Long contactnumber;
@@ -16,13 +16,23 @@ public class UserCredentials {
 	private Long roleid;
 	private Date createdOn;
 	private Date modifiedOn;
+	private String services;
 	
-	public Long getId() {
-		return id;
+	
+	public Long getUserid() {
+		return userid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
+
+	public String getServices() {
+		return services;
+	}
+
+	public void setServices(String services) {
+		this.services = services;
 	}
 
 	public String getEmailid() {

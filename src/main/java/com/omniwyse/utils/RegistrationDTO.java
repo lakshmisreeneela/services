@@ -1,6 +1,7 @@
 package com.omniwyse.utils;
 
 import java.util.Date;
+import java.util.List;
 
 public class RegistrationDTO {
 	private Long id;
@@ -17,6 +18,7 @@ public class RegistrationDTO {
 	private String emailid;
 	private String password;
 	private String userrole;
+	private List<String> services;
 
 	public Long getId() {
 		return id;
@@ -28,6 +30,14 @@ public class RegistrationDTO {
 
 	public String getDoornumber() {
 		return doornumber;
+	}
+
+	public List<String> getServices() {
+		return services;
+	}
+
+	public void setServices(List<String> services) {
+		this.services = services;
 	}
 
 	public void setDoornumber(String doornumber) {

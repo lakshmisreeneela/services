@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Table;
 
-@Table(name = "usersdetails")
+@Table(name = "userdetails")
 public class UserCredentials {
 	private Long userid;
 	private String fname;

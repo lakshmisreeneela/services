@@ -18,7 +18,7 @@ public class RegistrationDTO {
 	private String emailid;
 	private String password;
 	private String userrole;
-	private List<String> services;
+	private String services;
 
 	public Long getId() {
 		return id;
@@ -28,18 +28,20 @@ public class RegistrationDTO {
 		this.id = id;
 	}
 
+	public String getServices() {
+		return services;
+	}
+
+	public void setServices(String services) {
+		this.services = services;
+	}
+
+
 	public String getDoornumber() {
 		return doornumber;
 	}
 
-	public List<String> getServices() {
-		return services;
-	}
-
-	public void setServices(List<String> services) {
-		this.services = services;
-	}
-
+	
 	public void setDoornumber(String doornumber) {
 		this.doornumber = doornumber;
 	}

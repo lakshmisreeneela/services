@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Transaction;
 import com.omniwyse.db.DBFactory;
 import com.omniwyse.models.Address;
 import com.omniwyse.models.UserCredentials;
@@ -50,9 +52,10 @@ public class LoginService {
 
 	public int registration(RegistrationDTO registrationDTO) {
 		try {
-			
+
 			db = database.getServiceDb();
-			
+			Transaction transaction = db.startTransaction();
+
 			List<UserCredentials> user = db.where("emailid=?", registrationDTO.getEmailid())
 					.results(UserCredentials.class);
 			if (!user.isEmpty()) {
@@ -65,7 +68,7 @@ public class LoginService {
 					address.setState(registrationDTO.getState());
 					address.setPin(registrationDTO.getPin());
 
-					db.insert(address);
+					db.transaction(transaction).insert(address);
 					UserCredentials userCredentials = new UserCredentials();
 					userCredentials.setAddressid(address.getId());
 					userCredentials.setEmailid(registrationDTO.getEmailid());
@@ -74,19 +77,20 @@ public class LoginService {
 					userCredentials.setLname(registrationDTO.getLname());
 					userCredentials.setPassword(registrationDTO.getPassword());
 					userCredentials.setServices(registrationDTO.getServices().toString());
-					StringBuilder services = new StringBuilder();
-					for (int i = 0; i < registrationDTO.getServices().size(); i++) {
-						String service = registrationDTO.getServices().get(i);
-						if (i == registrationDTO.getServices().size() - 1) {
-							services.append(service);
-						} else {
-							services.append(service).append(',');
-						}
-					}
+					//StringBuilder services = new StringBuilder();
+//					for (int i = 0; i < registrationDTO.getServices().size(); i++) {
+//						String service = registrationDTO.getServices().get(i);
+//						if (i == registrationDTO.getServices().size() - 1) {
+//							services.append(service);
+//						} else {
+//							services.append(service).append(',');
+//						}
+//					}
+					userCredentials.setServices(registrationDTO.getServices());
 
 					userCredentials
 							.setRoleid(db.where("role='STORE_KEEPER'").results(UserRoles.class).get(0).getRoleid());
-					return db.insert(userCredentials).getRowsAffected();
+					return db.transaction(transaction).insert(userCredentials).getRowsAffected();
 				} else
 					return -5;
 			} else

@@ -2,6 +2,8 @@ package com.omniwyse.models;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "userdetails")
@@ -18,7 +20,8 @@ public class UserCredentials {
 	private Date modifiedOn;
 	private String services;
 	
-	
+	@Id
+	@GeneratedValue
 	public Long getUserid() {
 		return userid;
 	}

@@ -58,39 +58,41 @@ public class LoginService {
 
 			List<UserCredentials> user = db.where("emailid=?", registrationDTO.getEmailid())
 					.results(UserCredentials.class);
-			if (!user.isEmpty()) {
+			if (user.isEmpty()) {
 				user = db.where("contactnumber=?", registrationDTO.getContactnumber()).results(UserCredentials.class);
-				if (!user.isEmpty()) {
+				if (user.isEmpty()) {
 					Address address = new Address();
 					address.setDoornumber(registrationDTO.getDoornumber());
 					address.setStreet(registrationDTO.getStreet());
 					address.setCity(registrationDTO.getCity());
 					address.setState(registrationDTO.getState());
 					address.setPin(registrationDTO.getPin());
-
+					address.setCountry(registrationDTO.getCountry());
 					db.transaction(transaction).insert(address);
 					UserCredentials userCredentials = new UserCredentials();
-					userCredentials.setAddressid(address.getId());
+					userCredentials.setAddressid(address.getAddressid());
 					userCredentials.setEmailid(registrationDTO.getEmailid());
 					userCredentials.setContactnumber(registrationDTO.getContactnumber());
 					userCredentials.setFname(registrationDTO.getFname());
 					userCredentials.setLname(registrationDTO.getLname());
 					userCredentials.setPassword(registrationDTO.getPassword());
 					userCredentials.setServices(registrationDTO.getServices().toString());
-					//StringBuilder services = new StringBuilder();
-//					for (int i = 0; i < registrationDTO.getServices().size(); i++) {
-//						String service = registrationDTO.getServices().get(i);
-//						if (i == registrationDTO.getServices().size() - 1) {
-//							services.append(service);
-//						} else {
-//							services.append(service).append(',');
-//						}
-//					}
+					// StringBuilder services = new StringBuilder();
+					// for (int i = 0; i < registrationDTO.getServices().size(); i++) {
+					// String service = registrationDTO.getServices().get(i);
+					// if (i == registrationDTO.getServices().size() - 1) {
+					// services.append(service);
+					// } else {
+					// services.append(service).append(',');
+					// }
+					// }
 					userCredentials.setServices(registrationDTO.getServices());
 
 					userCredentials
 							.setRoleid(db.where("role='STORE_KEEPER'").results(UserRoles.class).get(0).getRoleid());
-					return db.transaction(transaction).insert(userCredentials).getRowsAffected();
+					int rowEffected = db.transaction(transaction).insert(userCredentials).getRowsAffected();
+					transaction.commit();
+					return rowEffected;
 				} else
 					return -5;
 			} else

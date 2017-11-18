@@ -2,11 +2,13 @@ package com.omniwyse.models;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "useraddress")
 public class Address {
-	 private Long id;
+	 private Long addressid;
 	  private String doornumber; 
 	  private String street; 
 	  private String city; 
@@ -14,17 +16,20 @@ public class Address {
 	  private String country;
 	  private Long pin;
 	  private Date createdOn;
-	  public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	  
 	public String getDoornumber() {
 		return doornumber;
 	}
 	public void setDoornumber(String doornumber) {
 		this.doornumber = doornumber;
+	}
+	@Id
+	@GeneratedValue
+	public Long getAddressid() {
+		return addressid;
+	}
+	public void setAddressid(Long addressid) {
+		this.addressid = addressid;
 	}
 	public String getStreet() {
 		return street;

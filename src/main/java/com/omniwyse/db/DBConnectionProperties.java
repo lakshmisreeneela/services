@@ -13,14 +13,14 @@ public class DBConnectionProperties {
 
 	public DBConnectionProperties() {
 
-		if (System.getenv("services_db_host") != null) {
-
-			host = System.getenv().getOrDefault("services_db_host", System.getenv("services_db_host"));
-			port = System.getenv().getOrDefault("services_db_port", System.getenv("services_db_port"));
-			user = System.getenv().getOrDefault("services_db_user", System.getenv("services_db_user"));
-			password = System.getenv().getOrDefault("services_db_password", System.getenv("services_db_password"));
-
-		} else {
+//		if (System.getenv("services_db_host") != null) {
+//
+//			host = System.getenv().getOrDefault("services_db_host", System.getenv("services_db_host"));
+//			port = System.getenv().getOrDefault("services_db_port", System.getenv("services_db_port"));
+//			user = System.getenv().getOrDefault("services_db_user", System.getenv("services_db_user"));
+//			password = System.getenv().getOrDefault("services_db_password", System.getenv("services_db_password"));
+//
+//		} else {
 
 			host = System.getenv().getOrDefault("services_db_host", "localhost");
 			port = System.getenv().getOrDefault("services_db_host", "3306");
@@ -29,7 +29,7 @@ public class DBConnectionProperties {
 
 		}
 
-	}
+	//}
 
 	public String host() {
 		return host;
